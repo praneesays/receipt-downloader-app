@@ -1,8 +1,7 @@
-import { jsPDF } from "jspdf";
-import "jspdf-autotable"; // Side-effect import to extend jsPDF
+import { GState, jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 /**
- * Generates and downloads a beautifully styled PDF receipt with balanced yoga-inspired aesthetics
  * @param {string} name - Customer name
  * @param {number} amount - Payment amount
  */
@@ -25,7 +24,7 @@ export const generateReceipt = (
       const innerMargin = 5;
 
       // Color palette - Calm yoga-inspired colors
-      const colors = {
+      const colors: Record<string, [number, number, number]> = {
         sage: [120, 145, 125], // Earthy sage green
         sand: [215, 204, 185], // Warm sand color
         deepTeal: [42, 83, 89], // Deep teal for contrast
@@ -38,14 +37,23 @@ export const generateReceipt = (
       doc.setFillColor(...colors.softCream);
       doc.roundedRect(0, 0, pageWidth, pageHeight, 5, 5, "F");
 
-      // Add subtle background image - using your updated image
+      // Add subtle background image
       const bgImageUrl =
         "https://cdn.pixabay.com/photo/2023/07/13/16/32/woman-8125244_1280.jpg";
-      doc.setGState(new doc.GState({ opacity: 0.05 })); // Very low opacity - reduced for subtlety
-      doc.addImage(bgImageUrl, "JPEG", 0, 0, pageWidth, pageHeight);
-      doc.setGState(new doc.GState({ opacity: 1 }));
 
-      // Header area - REDUCED HEIGHT from 70 to 50mm
+      const opacities = {
+        full: new GState({ opacity: 1 }),
+        high: new GState({ opacity: 0.9 }),
+        medium: new GState({ opacity: 0.3 }),
+        low: new GState({ opacity: 0.1 }),
+        veryLow: new GState({ opacity: 0.05 }),
+      };
+
+      doc.setGState(opacities.veryLow);
+      doc.addImage(bgImageUrl, "JPEG", 0, 0, pageWidth, pageHeight);
+      doc.setGState(opacities.full);
+
+      // Header area
       doc.setFillColor(...colors.sage);
       doc.rect(0, 0, pageWidth, 50, "F");
 
@@ -82,7 +90,7 @@ export const generateReceipt = (
         }
       }
 
-      // Add circular logo image - updated to your new logo
+      // Add circular logo image
       const logoUrl = "../../public/assets/images/logos.png";
 
       // Save the current graphics state
@@ -94,7 +102,7 @@ export const generateReceipt = (
 
       // Create a clipping region for the circular logo
       doc.saveGraphicsState();
-      doc.setGState(new doc.GState({ opacity: 1 }));
+      doc.setGState(opacities.full);
       doc.circle(logoX, logoY, logoRadius, "F");
 
       // Add the logo image inside the clipping region
@@ -108,7 +116,7 @@ export const generateReceipt = (
       );
       doc.restoreGraphicsState();
 
-      // Add header text - moved to align with logo
+      // Add header text
       doc.setTextColor(...colors.softCream);
       doc.setFontSize(24);
       doc.text("Receipt", pageWidth - margin, 45, { align: "right" });
@@ -118,7 +126,7 @@ export const generateReceipt = (
       doc.setLineWidth(0.7);
       doc.line(pageWidth / 2, 46, pageWidth - margin, 46);
 
-      // Receipt date box - moved up
+      // Receipt date box
       const date = new Date();
       const formattedDate = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -126,7 +134,7 @@ export const generateReceipt = (
         day: "numeric",
       });
 
-      // Add a more subtle date section
+      // date section
       doc.setFillColor(...colors.sand);
       const receiptBoxY = 55;
       const receiptBoxHeight = 15;
@@ -155,18 +163,17 @@ export const generateReceipt = (
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...colors.deepTeal);
-      doc.text("Client Information", margin, 65); // Moved up from 85
+      doc.text("Client Information", margin, 65);
 
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
-      doc.text(`Name: ${name}`, margin, 75); // Moved up from 95
+      doc.text(`Name: ${name}`, margin, 75);
 
-      // ADDED: Bottom margin after name (5mm)
       const nameBottomMargin = 5;
 
-      // Payment details section - moved up with added margin
+      // Payment details section
       doc.setFillColor(...colors.terracotta);
-      doc.setGState(new doc.GState({ opacity: 0.1 }));
+      doc.setGState(opacities.low);
       doc.roundedRect(
         margin,
         85 + nameBottomMargin,
@@ -176,7 +183,7 @@ export const generateReceipt = (
         5,
         "F"
       );
-      doc.setGState(new doc.GState({ opacity: 1 }));
+      doc.setGState(opacities.full);
 
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
@@ -239,7 +246,7 @@ export const generateReceipt = (
       const rectHeight = 35;
 
       doc.setFillColor(...colors.sage);
-      doc.setGState(new doc.GState({ opacity: 0.3 }));
+      doc.setGState(opacities.medium);
       doc.roundedRect(
         margin,
         finalY,
@@ -249,7 +256,7 @@ export const generateReceipt = (
         5,
         "F"
       );
-      doc.setGState(new doc.GState({ opacity: 1 }));
+      doc.setGState(opacities.full);
 
       doc.setFont("helvetica", "italic");
       doc.setFontSize(11);
@@ -267,10 +274,10 @@ export const generateReceipt = (
 
       // Instructor Information with signature
       const instructorY = finalY + rectHeight + 15;
-      const instructorHeight = 50; // Reduced from 70 to 50
+      const instructorHeight = 50;
 
       doc.setFillColor(...colors.deepTeal);
-      doc.setGState(new doc.GState({ opacity: 0.1 }));
+      doc.setGState(opacities.low);
       doc.roundedRect(
         margin,
         instructorY,
@@ -280,14 +287,14 @@ export const generateReceipt = (
         5,
         "F"
       );
-      doc.setGState(new doc.GState({ opacity: 1 }));
+      doc.setGState(opacities.full);
 
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...colors.deepTeal);
       doc.text("Authorized By", margin, instructorY - 5);
 
-      // Leader information - more compact
+      // Instructor information
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text("Seela Koteswara Rao", margin + 5, instructorY + 15);
@@ -295,7 +302,7 @@ export const generateReceipt = (
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
 
-      // Condensed qualifications to save space
+      // Condensed qualifications
       doc.text(
         "Seela Koteswara Rao, 30 Years Experience",
         margin + 5,
@@ -309,7 +316,7 @@ export const generateReceipt = (
 
       const signatureUrl =
         "https://cdn.pixabay.com/photo/2022/03/21/16/36/signature-7083534_1280.png";
-      doc.setGState(new doc.GState({ opacity: 0.9 }));
+      doc.setGState(opacities.high);
       doc.addImage(
         signatureUrl,
         "PNG",
@@ -318,11 +325,11 @@ export const generateReceipt = (
         60,
         25
       );
-      doc.setGState(new doc.GState({ opacity: 1 }));
+      doc.setGState(opacities.full);
 
       const spacingBeforeFooter = 20;
 
-      // Footer with calming teal - adjusted position to ensure gap after authorized section
+      // Footer with calming teal
       const footerY = Math.max(
         instructorY + instructorHeight + spacingBeforeFooter,
         pageHeight - 20
@@ -332,7 +339,7 @@ export const generateReceipt = (
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      doc.setTextColor(...colors.softCream); // Light text on dark background
+      doc.setTextColor(...colors.softCream);
       doc.text(
         "MoskhaVidya YogaMandir | Punyagiri Road, S Kota, Vizianagaram District | 535145 | 9989368781, 9866757311",
         pageWidth / 2,

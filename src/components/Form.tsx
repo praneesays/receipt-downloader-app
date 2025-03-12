@@ -14,19 +14,20 @@ const YogaReceiptForm = () => {
     amount: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
     // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({
-        ...errors,
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
         [name]: "",
-      });
+      }));
     }
   };
 
@@ -48,14 +49,14 @@ const YogaReceiptForm = () => {
     return valid;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      await generateReceipt(formData.name, parseFloat(formData.amount));
+      await generateReceipt(formData.name, parseFloat(formData.amount || "0")); // Ensures amount is always a valid number
       setIsSuccess(true);
       setTimeout(() => {
         setFormData({ name: "", amount: "" });
