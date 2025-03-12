@@ -2,89 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Receipt Generator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        background-color: #f4f4f9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-
-      .container {
-        background-color: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        text-align: center;
-      }
-
-      input,
-      button {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-      }
-
-      button {
-        background-color: #4caf50;
-        color: white;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #45a049;
-      }
-    </style>
+    <title>YOGA Receipt Generator</title>
   </head>
   <body>
-    <div class="container">
-      <h2>Receipt Generator</h2>
-      <form id="receiptForm">
-        <input type="text" id="name" placeholder="Enter Name" required />
-        <input type="number" id="amount" placeholder="Enter Amount" required />
-        <button type="button" id="generateReceipt">Generate Receipt</button>
-      </form>
-    </div>
-
-    <!-- jsPDF Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <script>
-      const { jsPDF } = window.jspdf;
-
-      document
-        .getElementById("generateReceipt")
-        .addEventListener("click", function () {
-          const name = document.getElementById("name").value;
-          const amount = document.getElementById("amount").value;
-
-          if (!name || !amount) {
-            alert("Please fill in all fields.");
-            return;
-          }
-
-          const doc = new jsPDF();
-
-          // Receipt content
-          doc.setFontSize(18);
-          doc.text("Receipt", 20, 20);
-          doc.setFontSize(12);
-          doc.text(`Received from: ${name}`, 20, 40);
-          doc.text(`Amount: ₹${amount}`, 20, 50);
-          doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 60);
-
-          // Save as PDF
-          doc.save(`Receipt-${name}.pdf`);
-        });
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
