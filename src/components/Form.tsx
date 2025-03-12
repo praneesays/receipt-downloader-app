@@ -86,7 +86,7 @@ const YogaReceiptForm = () => {
           <div className="flex items-center">
             <div className="bg-white rounded-full p-1 mr-3">
               <img
-                src="../../public/assets/images/logo.png"
+                src="/assets/images/logo.png"
                 alt="MokshaVidya Logo"
                 className="h-14 w-14 rounded-full"
               />

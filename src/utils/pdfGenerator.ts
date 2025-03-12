@@ -63,7 +63,7 @@ export const generateReceipt = (
       const logoRadius = 15;
 
       doc.addImage(
-        "../../public/assets/images/logo-text.png",
+        "/assets/images/logo-text.png",
         65,
         -4,
         logoRadius * 6,
@@ -91,7 +91,7 @@ export const generateReceipt = (
       }
 
       // Add circular logo image
-      const logoUrl = "../../public/assets/images/logos.png";
+      const logoUrl = "/assets/images/logos.png";
 
       // Save the current graphics state
       doc.saveGraphicsState();
