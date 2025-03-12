@@ -38,8 +38,7 @@ export const generateReceipt = (
       doc.roundedRect(0, 0, pageWidth, pageHeight, 5, 5, "F");
 
       // Add subtle background image
-      const bgImageUrl =
-        "https://cdn.pixabay.com/photo/2023/07/13/16/32/woman-8125244_1280.jpg";
+      const bgImageUrl = "/assets/images/yoga-bg.jpg";
 
       const opacities = {
         full: new GState({ opacity: 1 }),
@@ -49,7 +48,7 @@ export const generateReceipt = (
         veryLow: new GState({ opacity: 0.05 }),
       };
 
-      doc.setGState(opacities.veryLow);
+      doc.setGState(opacities.low);
       doc.addImage(bgImageUrl, "JPEG", 0, 0, pageWidth, pageHeight);
       doc.setGState(opacities.full);
 
@@ -119,12 +118,13 @@ export const generateReceipt = (
       // Add header text
       doc.setTextColor(...colors.softCream);
       doc.setFontSize(24);
+      doc.setFont("helvetica", "bold");
       doc.text("Receipt", pageWidth - margin, 45, { align: "right" });
 
       // Add decorative line
       doc.setDrawColor(...colors.sand);
       doc.setLineWidth(0.7);
-      doc.line(pageWidth / 2, 46, pageWidth - margin, 46);
+      doc.line(pageWidth / 2, 47, pageWidth - margin, 47);
 
       // Receipt date box
       const date = new Date();
@@ -300,7 +300,7 @@ export const generateReceipt = (
       doc.text("Seela Koteswara Rao", margin + 5, instructorY + 15);
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
+      doc.setFontSize(10);
 
       // Condensed qualifications
       doc.text(
@@ -338,12 +338,12 @@ export const generateReceipt = (
       doc.rect(0, footerY, pageWidth, 20, "F");
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
+      doc.setFontSize(10);
       doc.setTextColor(...colors.softCream);
       doc.text(
         "MoskhaVidya YogaMandir | Punyagiri Road, S Kota, Vizianagaram District | 535145 | 9989368781, 9866757311",
-        pageWidth / 2,
-        footerY + 10,
+        pageWidth / 2 + 10,
+        footerY + 11,
         { align: "center" }
       );
 

@@ -81,18 +81,23 @@ const YogaReceiptForm = () => {
       </div>
 
       {/* Header with logo */}
-      <header className="bg-[#78917D] py-6 px-4 shadow-md relative z-10">
+      <header className="bg-[#78917D] p-2 sm:py-6 sm:px-4 shadow-md relative z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <div className="bg-white rounded-full p-1 mr-3">
+            <div className="bg-white rounded-full p-1">
               <img
                 src="/assets/images/logo.png"
                 alt="MokshaVidya Logo"
                 className="h-14 w-14 rounded-full"
               />
             </div>
-            <div className="text-[#F5F0E6]">
-              <h1 className="font-bold text-xl">MokshaVidya YogaMandir</h1>
+            <div className="text-[#F5F0E6] w-5/6">
+              <img
+                src="/assets/images/logo-text.png"
+                alt="MokshaVidya Logo Text"
+                className="w-100 object-contain rounded-full"
+              />
+              {/* <h1 className="font-bold text-xl">MokshaVidya YogaMandir</h1> */}
               {/* <p className="text-sm">YogaMandir</p> */}
             </div>
           </div>
@@ -198,7 +203,7 @@ const YogaReceiptForm = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Full Name
+                Recipient Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -221,7 +226,7 @@ const YogaReceiptForm = () => {
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter your full name"
+                  placeholder="Enter Recipient's name"
                   className={`pl-10 w-full rounded-lg border ${
                     errors.name
                       ? "border-red-300 focus:ring-red-500 focus:border-red-500"
